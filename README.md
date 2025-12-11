@@ -1,11 +1,8 @@
 # 📝 Todo App — React + TypeScript
 
-## A clean and modern Todo App built with React, TypeScript, and Tailwind CSS, featuring smooth UI interactions, strong state management, and useful productivity tools.
-
 ### 🚀 Features
 
 ```
-
 ✅ Fully responsive UI with Tailwind CSS
 
 🎨 Custom color variables for easy theming
