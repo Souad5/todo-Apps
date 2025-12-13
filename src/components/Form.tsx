@@ -1,17 +1,19 @@
 import type { FormEvent } from "react";
-import Tasks from "./Tasks";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+import { CiSearch } from "react-icons/ci";
+import { MdFilterAlt } from "react-icons/md";
 
 const Home = () => {
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const name = (form.elements.namedItem("name") as HTMLInputElement).value;
     const email = (form.elements.namedItem("des") as HTMLInputElement).value;
     console.log(name, email);
   };
+
   return (
-    <section className="max-w-4xl mx-auto h-screen pt-5 px-3">
+    <section className="max-w-4xl mx-auto pt-5 px-4">
       <div className="flex flex-col items-center">
         <IoIosCheckmarkCircleOutline
           className="border w-20 h-20 p-2 bg-sky-50 rounded-3xl mb-2"
@@ -20,6 +22,26 @@ const Home = () => {
         <h1 className="text-5xl font-bold mb-4">
           To<span className="text-sky">Do</span> Apps
         </h1>
+      </div>
+
+      <div className="flex flex-col md:flex-row justify-between my-4">
+        <form className="relative">
+          <input
+            type="text"
+            className="border border-[#e5e0dc] rounded-lg bg-white p-2 focus:outline-sky-400 w-full"
+            placeholder="search"
+          />
+          <CiSearch className="absolute top-4/12 right-3" />
+        </form>
+
+        <form className="relative">
+          <input
+            type="text"
+            className="border border-[#e5e0dc] bg-white p-2 rounded-lg focus:outline-sky-400 w-full"
+            placeholder="filter"
+          />
+          <MdFilterAlt  className="absolute top-4/12 right-3"/>
+        </form>
       </div>
 
       <form
@@ -58,8 +80,6 @@ const Home = () => {
           />
         </div>
       </form>
-
-      <Tasks />
     </section>
   );
 };
