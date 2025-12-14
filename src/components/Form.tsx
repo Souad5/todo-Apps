@@ -2,14 +2,15 @@ import type { FormEvent } from "react";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { MdFilterAlt } from "react-icons/md";
+import Tasks from "./Tasks";
 
-const Home = () => {
+const Form = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
-    const name = (form.elements.namedItem("name") as HTMLInputElement).value;
-    const email = (form.elements.namedItem("des") as HTMLInputElement).value;
-    console.log(name, email);
+    const title = (form.elements.namedItem("name") as HTMLInputElement).value;
+    const des = (form.elements.namedItem("des") as HTMLInputElement).value;
+    
   };
 
   return (
@@ -24,7 +25,7 @@ const Home = () => {
         </h1>
       </div>
 
-      <div className="flex flex-col md:flex-row justify-between my-4">
+      <div className="flex flex-col md:flex-row justify-between my-4 gap-4">
         <form className="relative">
           <input
             type="text"
@@ -40,7 +41,7 @@ const Home = () => {
             className="border border-[#e5e0dc] bg-white p-2 rounded-lg focus:outline-sky-400 w-full"
             placeholder="filter"
           />
-          <MdFilterAlt  className="absolute top-4/12 right-3"/>
+          <MdFilterAlt className="absolute top-4/12 right-3" />
         </form>
       </div>
 
@@ -80,8 +81,9 @@ const Home = () => {
           />
         </div>
       </form>
+      <Tasks data={handleSubmit} />
     </section>
   );
 };
 
-export default Home;
+export default Form;
