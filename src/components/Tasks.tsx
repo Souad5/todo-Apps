@@ -1,17 +1,14 @@
-import { useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import { FaTasks } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { TiPin } from "react-icons/ti";
 
 const Tasks = () => {
-  const [allTask, setAllTask] = useState([]);
-
   return (
-    <section className="mt-5 max-w-4xl mx-auto h-screen">
+    <section className="mt-5 max-w-4xl mx-auto h-screen w-[95%]">
       {/* tasks count */}
       <div className="flex justify-baseline items-center gap-2">
-        <FaTasks /> <h1>TASKS {allTask}</h1>
+        <FaTasks /> <h1>TASKS</h1>
       </div>
 
       <div className="flex flex-col justify-center items-center mt-16 gap-2">
@@ -21,7 +18,7 @@ const Tasks = () => {
       </div>
 
       <div
-        className="bg-[#ffffff] border border-[#e5e0dc] rounded-xl p-4 mt-4 flex justify-between items-center
+        className="bg-sky-50 border border-[#00bcff] rounded-xl p-4 mt-4 flex justify-between items-center
       "
       >
         <div className="flex gap-3">

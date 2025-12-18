@@ -1,20 +1,22 @@
-import type { FormEvent } from "react";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { MdFilterAlt } from "react-icons/md";
-import Tasks from "./Tasks";
+import { useFormik } from "formik";
+import Button from "./ui/Button";
 
 const Form = () => {
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const title = (form.elements.namedItem("name") as HTMLInputElement).value;
-    const des = (form.elements.namedItem("des") as HTMLInputElement).value;
-    
-  };
+  const postData = useFormik({
+    initialValues: {
+      title: "",
+      des: "",
+    },
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
 
   return (
-    <section className="max-w-4xl mx-auto pt-5 px-4">
+    <section className="max-w-4xl mx-auto pt-5 w-[95%]">
       <div className="flex flex-col items-center">
         <IoIosCheckmarkCircleOutline
           className="border w-20 h-20 p-2 bg-sky-50 rounded-3xl mb-2"
@@ -29,7 +31,7 @@ const Form = () => {
         <form className="relative">
           <input
             type="text"
-            className="border border-[#e5e0dc] rounded-lg bg-white p-2 focus:outline-sky-400 w-full"
+            className="border border-[#00bcff] rounded-lg bg-sky-50 p-2 focus:outline-sky-400 w-full"
             placeholder="search"
           />
           <CiSearch className="absolute top-4/12 right-3" />
@@ -38,7 +40,7 @@ const Form = () => {
         <form className="relative">
           <input
             type="text"
-            className="border border-[#e5e0dc] bg-white p-2 rounded-lg focus:outline-sky-400 w-full"
+            className="border border-[#00bcff] bg-sky-50 p-2 rounded-lg focus:outline-sky-400 w-full"
             placeholder="filter"
           />
           <MdFilterAlt className="absolute top-4/12 right-3" />
@@ -46,19 +48,20 @@ const Form = () => {
       </div>
 
       <form
-        onSubmit={handleSubmit}
-        className="space-x-3 w-full p-6 bg-[#ffffff] rounded-xl border 
-          border-[#e5e0dc] shadow-xl"
+        onSubmit={postData.handleSubmit}
+        className="w-full p-6 bg-sky-50 rounded-xl border 
+          border-[#00bcff] shadow-xl"
       >
         <div className="flex flex-col md:flex-col justify-center items-center gap-2">
           <div className="flex flex-col w-full space-y-2">
             <label htmlFor="">What you will do?</label>
             <input
-              type="text"
               name="name"
               placeholder="Work title"
-              className="rounded-md p-2 w-full border border-[#e5e0dc] focus:outline-[#00a6f4]"
+              defaultValue={postData.values.title}
+              className="rounded-md p-2 w-full border border-[#00bcff] focus:outline-[#00a6f4]"
               required
+              onChange={postData.handleChange}
             />
           </div>
 
@@ -66,22 +69,18 @@ const Form = () => {
             <label>Describe your work</label>
             <textarea
               name="des"
-              className="border border-[#e5e0dc] rounded-md p-2 w-full min-h-32 focus:outline-[#00a6f4]"
+              className="border border-[#00bcff] rounded-md p-2 w-full min-h-32 focus:outline-[#00a6f4]"
               required
-              id=""
+              value={postData.values.des}
+              onChange={postData.handleChange}
             ></textarea>
           </div>
         </div>
 
         <div className="text-center pt-5">
-          <input
-            type="submit"
-            value="+  Submit"
-            className="bg-brand bg-sky-500 text-white text-[1em] rounded-lg box-border border border-transparent hover:bg-sky-400 focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none cursor-pointer w-full"
-          />
+          <Button></Button>
         </div>
       </form>
-      <Tasks data={handleSubmit} />
     </section>
   );
 };
