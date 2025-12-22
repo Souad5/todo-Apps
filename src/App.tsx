@@ -1,12 +1,11 @@
-import Home from "./components/Form";
-import Tasks from "./components/Tasks";
+import TaskForm from "./components/TaskForm";
+import { TaskProvider } from "./contexts/TaskProvider";
 
 function App() {
   return (
-    <section className="bg-sky-100">
-      <Home />
-      <Tasks />
-    </section>
+    <TaskProvider>
+      <TaskForm />
+    </TaskProvider>
   );
 }
 
