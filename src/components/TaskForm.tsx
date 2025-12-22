@@ -1,6 +1,5 @@
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
-import { MdFilterAlt } from "react-icons/md";
 import { useFormik } from "formik";
 import Button from "./ui/Button";
 import TasksSection from "./TasksSection";
@@ -33,9 +32,7 @@ const TaskForm = () => {
           className="border w-20 h-20 p-2 rounded-3xl mb-2"
           color="#00a6f4"
         />
-        <h1 className="text-5xl font-bold mb-4">
-          To<span className="text-sky">Do</span> Apps
-        </h1>
+        <h1 className="text-5xl font-bold mb-4">ToDo Apps</h1>
       </div>
 
       <div className="flex flex-col md:flex-row justify-between my-4 gap-4">
@@ -54,7 +51,10 @@ const TaskForm = () => {
             className="border border-[#00bcff] p-2 rounded-lg focus:outline-sky-400 w-full"
             placeholder="filter"
           />
-          <MdFilterAlt className="absolute top-4/12 right-3" />
+          <select name="" id="" className="absolute top-4/12 right-0.5 w-full">
+            <option value="none"></option>
+            <option value="pending">Pending</option>
+          </select>
         </form>
       </div>
 

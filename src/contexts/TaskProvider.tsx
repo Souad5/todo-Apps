@@ -10,7 +10,6 @@ type TaskContextType = {
   togglePin: (id: string) => void;
   editTask: (id: string, title: string, des: string) => void;
 };
-
 const TaskContext = createContext<TaskContextType | null>(null);
 
 export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
@@ -67,6 +66,7 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
       prev.map((task) => (task.id === id ? { ...task, title, des } : task))
     );
   };
+  console.log(tasks);
 
   const sortedTasks = [...tasks].sort(
     (a, b) => Number(b.pinned) - Number(a.pinned)

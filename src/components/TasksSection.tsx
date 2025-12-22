@@ -3,10 +3,8 @@ import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { TiPin } from "react-icons/ti";
 import { FaTasks } from "react-icons/fa";
-
 import { useTasks } from "../contexts/TaskProvider";
 import type { Task } from "../types";
-
 import Motion from "./ui/Motion";
 import EditTaskModal from "./ui/EditTaskModal";
 
@@ -14,11 +12,11 @@ const TasksSection = () => {
   const { tasks, deleteTask, toggleComplete, togglePin, editTask } = useTasks();
 
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-
+  // open Modal
   const openEditModal = (task: Task) => {
     setSelectedTask(task);
   };
-
+  // closeModal
   const closeEditModal = () => {
     setSelectedTask(null);
   };
@@ -37,7 +35,7 @@ const TasksSection = () => {
 
   return (
     <Motion>
-      <section className="mt-6 space-y-3">
+      <section className="my-10 space-y-3">
         {tasks.map((task) => (
           <div
             key={task.id}
