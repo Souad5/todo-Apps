@@ -1,6 +1,8 @@
+import { v4 as uuidv4 } from "uuid";
 import { createContext, useContext, useEffect, useState } from "react";
 import type { Task } from "../types";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 type TaskContextType = {
   tasks: Task[];
@@ -22,11 +24,13 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
+  const id = uuidv4();
+
   const addTask = (title: string, des: string) => {
     setTasks((prev) => [
       ...prev,
       {
-        id: crypto.randomUUID(),
+        id,
         title,
         des,
         completed: false,
@@ -35,15 +39,37 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
     ]);
   };
 
-  const notify = () =>
+  const deleteNotify = () =>
     toast.warning("Task deleted!!", {
       position: "top-center",
     });
 
   const deleteTask = (id: string) => {
-    setTasks((prev) => prev.filter((task) => task.id !== id));
-    notify();
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      setTasks((prev) => prev.filter((task) => task.id !== id));
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+        });
+      }
+      deleteNotify();
+    });
   };
+
+  const completeNotify = () =>
+    toast.success("Task completed", {
+      position: "top-center",
+    });
 
   const toggleComplete = (id: string) => {
     setTasks((prev) =>
@@ -51,6 +77,7 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
         task.id === id ? { ...task, completed: !task.completed } : task
       )
     );
+    completeNotify();
   };
 
   const togglePin = (id: string) => {
@@ -66,7 +93,6 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
       prev.map((task) => (task.id === id ? { ...task, title, des } : task))
     );
   };
-  console.log(tasks);
 
   const sortedTasks = [...tasks].sort(
     (a, b) => Number(b.pinned) - Number(a.pinned)

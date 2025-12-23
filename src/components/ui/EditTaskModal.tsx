@@ -19,15 +19,6 @@ const EditTaskModal = ({ task, onClose, onSave }: Props) => {
     }
   }, [task]);
 
-  // Close on ESC
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", handleEsc);
-    return () => document.removeEventListener("keydown", handleEsc);
-  }, [onClose]);
-
   if (!task) return null;
 
   const handleSave = () => {
@@ -46,7 +37,7 @@ const EditTaskModal = ({ task, onClose, onSave }: Props) => {
         onClick={(e) => e.stopPropagation()}
         className="w-[92%] max-w-lg rounded-2xl bg-white p-6 shadow-2xl animate-scaleIn"
       >
-        {/* Header */}
+        {/*Edit modal Header */}
         <div className="mb-4">
           <h2 className="text-xl font-semibold text-gray-800">Edit Task</h2>
           <p className="text-sm text-gray-500">

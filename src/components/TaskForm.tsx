@@ -2,9 +2,9 @@ import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { useFormik } from "formik";
 import Button from "./ui/Button";
-import TasksSection from "./TasksSection";
 import { useTasks } from "../contexts/TaskProvider";
 import { toast } from "react-toastify";
+import TasksSection from "./TasksSection";
 
 const TaskForm = () => {
   const { addTask } = useTasks();

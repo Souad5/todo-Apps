@@ -15,7 +15,7 @@ const Motion = ({ children }: { children: ReactNode }) => {
       }}
       viewport={{
         once: true,
-        amount: "all",
+        // amount: 1,
       }}
     >
       {children}
