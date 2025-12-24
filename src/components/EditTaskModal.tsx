@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Task } from "../../types";
+import type { Task } from "../types";
 
 type Props = {
   task: Task | null;

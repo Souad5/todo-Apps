@@ -5,7 +5,7 @@ import { TiPin } from "react-icons/ti";
 import { FaTasks } from "react-icons/fa";
 import { useTasks } from "../contexts/TaskProvider";
 import type { Task } from "../types";
-import EditTaskModal from "./ui/EditTaskModal";
+import EditTaskModal from "./EditTaskModal";
 
 const TasksSection = () => {
   const { tasks, deleteTask, toggleComplete, togglePin, editTask } = useTasks();

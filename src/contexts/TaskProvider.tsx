@@ -54,15 +54,15 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
-      setTasks((prev) => prev.filter((task) => task.id !== id));
-      if (result.isConfirmed) {
+      if (result.isConfirmed === true) {
+        setTasks((prev) => prev.filter((task) => task.id !== id));
         Swal.fire({
           title: "Deleted!",
-          text: "Your file has been deleted.",
+          text: "Your task has been deleted.",
           icon: "success",
         });
+        deleteNotify();
       }
-      deleteNotify();
     });
   };
 
