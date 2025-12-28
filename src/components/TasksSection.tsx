@@ -6,11 +6,14 @@ import { FaTasks } from "react-icons/fa";
 import { useTasks } from "../contexts/TaskProvider";
 import type { Task } from "../types";
 import EditTaskModal from "./EditTaskModal";
+import { motion } from "framer-motion";
+import { TaskCard } from "./TaskCard.tsx";
 
 const TasksSection = () => {
   const { tasks, deleteTask, toggleComplete, togglePin, editTask } = useTasks();
 
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const pinnedTasks = tasks.filter((task) => task.pinned);
 
   // open Modal
   const openEditModal = (task: Task) => {
@@ -33,12 +36,29 @@ const TasksSection = () => {
 
   return (
     <section className="my-10 space-y-3">
-      <h1 className="text-3xl font-bold text-center">Pinned Task</h1>
-      {tasks.length === 0 ? "<p>No pin task</p>" : `None`}
+      {pinnedTasks.length > 0 && (
+        <>
+          <h1 className="text-3xl font-bold text-center">Pinned Tasks</h1>
+
+          {pinnedTasks.map((task) => (
+            <TaskCard key={task.id} task={task} />
+          ))}
+        </>
+      )}
       <h1 className="text-center text-3xl font-bold">All Task</h1>
       <h1>Task: {tasks.length}</h1>
       {tasks.map((task) => (
-        <div
+        <motion.div
+          initial={{
+            opacity: 0,
+          }}
+          whileInView={{
+            opacity: 1,
+            scale: 1,
+            transition: {
+              duration: 2,
+            },
+          }}
           key={task.id}
           className="border border-[#00bcff] rounded-xl p-4 flex justify-between items-start"
         >
@@ -79,7 +99,7 @@ const TasksSection = () => {
 
             <TiPin
               className={`cursor-pointer ${
-                task.pinned ? "text-yellow-500" : "hover:text-yellow-500"
+                task.pinned ? "text-blue-500" : "hover:text-gray-500"
               }`}
               title="Pin"
               onClick={() => togglePin(task.id)}
@@ -91,7 +111,7 @@ const TasksSection = () => {
               onClick={() => deleteTask(task.id)}
             />
           </div>
-        </div>
+        </motion.div>
       ))}
 
       {/* Edit Modal */}
