@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import type { Task } from "../types";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
@@ -12,7 +12,7 @@ type TaskContextType = {
   togglePin: (id: string) => void;
   editTask: (id: string, title: string, des: string) => void;
 };
-const TaskContext = createContext<TaskContextType | null>(null);
+export const TaskContext = createContext<TaskContextType | null>(null);
 
 export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
   const [tasks, setTasks] = useState<Task[]>(() => {
@@ -24,13 +24,13 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
-  const id = uuidv4();
+  // const id = uuidv4();
 
   const addTask = (title: string, des: string) => {
     setTasks((prev) => [
       ...prev,
       {
-        id,
+        id: uuidv4(),
         title,
         des,
         completed: false,
@@ -66,18 +66,12 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  const completeNotify = () =>
-    toast.success("Task completed", {
-      position: "top-center",
-    });
-
   const toggleComplete = (id: string) => {
     setTasks((prev) =>
       prev.map((task) =>
         task.id === id ? { ...task, completed: !task.completed } : task
       )
     );
-    completeNotify();
   };
 
   const togglePin = (id: string) => {
@@ -112,10 +106,4 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
       {children}
     </TaskContext.Provider>
   );
-};
-
-export const useTasks = () => {
-  const ctx = useContext(TaskContext);
-  if (!ctx) throw new Error("useTasks must be used inside TaskProvider");
-  return ctx;
 };

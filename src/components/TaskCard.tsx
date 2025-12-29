@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { useTasks } from "../contexts/TaskProvider";
 import { TiPin } from "react-icons/ti";
 import { MdDelete } from "react-icons/md";
+import type { Task } from "../types";
+import { useTasks } from "../useTasks";
 export const TaskCard = ({ task }: { task: Task }) => {
   const { deleteTask, toggleComplete, togglePin } = useTasks();
 

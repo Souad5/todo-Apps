@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Task } from "../types";
-
-type Props = {
-  task: Task | null;
-  onClose: () => void;
-  onSave: (id: string, title: string, des: string) => void;
-};
+import type { Props } from "../types";
 
 const EditTaskModal = ({ task, onClose, onSave }: Props) => {
   const [title, setTitle] = useState("");
