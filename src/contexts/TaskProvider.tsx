@@ -1,18 +1,20 @@
 import { v4 as uuidv4 } from "uuid";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+// import { TaskContext } from "../types";
 import type { Task } from "../types";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
-type TaskContextType = {
+export type TaskContextType = {
   tasks: Task[];
   addTask: (title: string, des: string) => void;
   deleteTask: (id: string) => void;
   toggleComplete: (id: string) => void;
   togglePin: (id: string) => void;
   editTask: (id: string, title: string, des: string) => void;
+  reorderTasks: (tasks: Task[]) => void;
 };
-export const TaskContext = createContext<TaskContextType | null>(null);
+const TaskContext = createContext<TaskContextType | null>(null);
 
 export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
   const [tasks, setTasks] = useState<Task[]>(() => {
@@ -52,15 +54,11 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Delete",
     }).then((result) => {
       if (result.isConfirmed === true) {
         setTasks((prev) => prev.filter((task) => task.id !== id));
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your task has been deleted.",
-          icon: "success",
-        });
+
         deleteNotify();
       }
     });
@@ -91,6 +89,12 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
   const sortedTasks = [...tasks].sort(
     (a, b) => Number(b.pinned) - Number(a.pinned)
   );
+  const reorderTasks = (newOrder: Task[]) => {
+    setTasks((prev) => {
+      const pinned = prev.filter((t) => t.pinned);
+      return [...pinned, ...newOrder];
+    });
+  };
 
   return (
     <TaskContext.Provider
@@ -101,9 +105,16 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
         toggleComplete,
         togglePin,
         editTask,
+        reorderTasks,
       }}
     >
       {children}
     </TaskContext.Provider>
   );
+};
+
+export const useTasks = () => {
+  const ctx = useContext(TaskContext);
+  if (!ctx) throw new Error("useTasks must be used inside TaskProvider");
+  return ctx;
 };

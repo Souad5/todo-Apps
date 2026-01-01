@@ -4,10 +4,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import { toast } from "react-toastify";
-
 import Button from "./ui/Button";
-import { useTasks } from "../useTasks";
 import TasksSection from "./TasksSection";
+import { useTasks } from "../contexts/TaskProvider";
 
 type FilterStatus = "all" | "pending" | "completed";
 
@@ -18,7 +17,7 @@ const TaskForm = () => {
   const { addTask } = useTasks();
 
   const notify = () =>
-    toast("Task submitted successfully", { position: "top-center" });
+    toast.success("Task submitted successfully", { position: "top-center" });
 
   // Formik with Yup validation
   const postData = useFormik({
@@ -61,7 +60,9 @@ const TaskForm = () => {
             className="border border-[#00bcff] rounded-lg p-2 focus:outline-sky-400 w-full"
             placeholder="Search tasks..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+            }}
           />
           <CiSearch className="absolute top-1/2 transform -translate-y-1/2 right-3" />
         </div>

@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import type { Props } from "../types";
 
 const EditTaskModal = ({ task, onClose, onSave }: Props) => {
-  const [title, setTitle] = useState("");
-  const [des, setDes] = useState("");
+  const [title, setTitle] = useState(task?.title || "");
+  const [des, setDes] = useState(task?.des || "");
 
   // Sync modal state when task changes
   useEffect(() => {
     if (task) {
-      setTitle(task.title);
-      setDes(task.des);
+      // setTitle(task.title);
+      // setDes(task.des);
     }
   }, [task]);
 
