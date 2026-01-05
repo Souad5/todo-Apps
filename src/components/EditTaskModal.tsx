@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Props } from "../types";
+import toast from "react-hot-toast";
 
 const EditTaskModal = ({ task, onClose, onSave }: Props) => {
   const [title, setTitle] = useState(task?.title || "");
@@ -8,18 +9,39 @@ const EditTaskModal = ({ task, onClose, onSave }: Props) => {
   // Sync modal state when task changes
   useEffect(() => {
     if (task) {
-      // setTitle(task.title);
-      // setDes(task.des);
+      setTitle(task.title);
+      setDes(task.des);
     }
   }, [task]);
 
   if (!task) return null;
 
+  const notifyToast = () => toast.error("Please write a title and description");
+
   const handleSave = () => {
+    if (title.length === 0 && des.length === 0) {
+      notifyToast();
+      return;
+    }
     if (!title.trim()) return;
     onSave(task.id, title, des);
     onClose();
   };
+
+  // const handleSave = () => {
+  //   if (!title.trim() && !des.trim()) {
+  //     notifyToast();
+  //     return;
+  //   }
+
+  //   if (!title.trim()) {
+  //     alert("Title is required");
+  //     return;
+  //   }
+
+  //   onSave(task.id, title, des);
+  //   onClose();
+  // };
 
   return (
     <div
@@ -66,13 +88,13 @@ const EditTaskModal = ({ task, onClose, onSave }: Props) => {
         <div className="flex justify-end gap-3">
           <button
             onClick={onClose}
-            className="rounded-lg border px-4 py-2 text-sm hover:bg-gray-100"
+            className="rounded-lg border px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className="rounded-lg bg-sky-500 px-5 py-2 text-sm text-white hover:bg-sky-600"
+            className="rounded-lg bg-sky-500 px-5 py-2 text-sm text-white hover:bg-sky-600 cursor-pointer"
           >
             Save Changes
           </button>

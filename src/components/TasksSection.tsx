@@ -1,19 +1,17 @@
 import { useEffect, useState } from "react";
-import { CiEdit } from "react-icons/ci";
-import { MdDelete, MdDragIndicator } from "react-icons/md";
-import { TiPin } from "react-icons/ti";
 import { FaTasks } from "react-icons/fa";
-import { Reorder, useDragControls } from "framer-motion";
+import { motion, AnimatePresence, Reorder } from "framer-motion";
 import type { Task, TasksSectionProps } from "../types";
 import EditTaskModal from "./EditTaskModal";
 import { TaskCard } from "./TaskCard";
 import Pagination from "./Pagination";
 import { useTasks } from "../contexts/TaskProvider";
+import TaskItems from "./TaskItems";
 
 const TASKS_PER_PAGE = 5;
 
 const TasksSection = ({ searchQuery, filterStatus }: TasksSectionProps) => {
-  const { tasks, deleteTask, toggleComplete, togglePin, editTask } = useTasks();
+  const { tasks, editTask } = useTasks();
 
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -47,10 +45,12 @@ const TasksSection = ({ searchQuery, filterStatus }: TasksSectionProps) => {
   const [reorder, setReorder] = useState(currentTasks);
 
   useEffect(() => {
-    if (searchQuery) {
-      setCurrentPage(1);
-    }
-  }, [searchQuery]);
+    setCurrentPage(1);
+  }, [searchQuery, filterStatus]);
+
+  // useEffect(() => {
+  //   setReorder(currentTasks);
+  // }, [currentTasks]);
 
   if (tasks.length === 0) {
     return (
@@ -61,8 +61,6 @@ const TasksSection = ({ searchQuery, filterStatus }: TasksSectionProps) => {
       </div>
     );
   }
-
-  const controls = useDragControls();
 
   return (
     <section className="my-10 space-y-4">
@@ -84,76 +82,8 @@ const TasksSection = ({ searchQuery, filterStatus }: TasksSectionProps) => {
         onReorder={setReorder}
         className="space-y-4"
       >
-        {currentTasks.map((task) => (
-          <Reorder.Item
-            key={task.id}
-            value={task}
-            dragListener={false}
-            dragControls={controls}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="border border-sky-400 rounded-xl p-4 flex justify-between items-start"
-          >
-            {/* Left */}
-
-            <div className="flex gap-3">
-              <input
-                type="checkbox"
-                checked={task.completed}
-                onChange={() => toggleComplete(task.id)}
-                className="mt-1 cursor-pointer accent-sky-500"
-              />
-
-              <div>
-                <h3
-                  className={`font-semibold ${
-                    task.completed ? "line-through text-gray-400" : ""
-                  }`}
-                >
-                  {task.title}
-                </h3>
-                <p
-                  className={`text-sm ${
-                    task.completed ? "text-gray-400" : "text-gray-600"
-                  }`}
-                >
-                  {task.des}
-                </p>
-              </div>
-            </div>
-
-            {/* Actions buttons*/}
-            <div className="flex items-center gap-3 text-xl">
-              <CiEdit
-                className="cursor-pointer hover:text-sky-500"
-                onClick={() => openEditModal(task)}
-                title="edit"
-              />
-
-              <TiPin
-                className={`cursor-pointer ${
-                  task.pinned ? "text-blue-500" : "hover:text-gray-500"
-                }`}
-                onClick={() => togglePin(task.id)}
-                title="Pin task"
-              />
-
-              <MdDelete
-                className="cursor-pointer text-rose-400 hover:text-red-600"
-                onClick={() => deleteTask(task.id)}
-                title="delete"
-              />
-
-              {/* DRAG HANDLE */}
-              <button
-                onPointerDown={(e) => controls.start(e)}
-                className="cursor-grab text-gray-400 hover:text-gray-600 reorder-handle"
-                title="Drag"
-              >
-                <MdDragIndicator />
-              </button>
-            </div>
-          </Reorder.Item>
+        {reorder.map((task) => (
+          <TaskItems key={task.id} task={task} openEditModal={openEditModal} />
         ))}
       </Reorder.Group>
 
@@ -165,11 +95,15 @@ const TasksSection = ({ searchQuery, filterStatus }: TasksSectionProps) => {
       />
 
       {/* Edit Modal */}
-      <EditTaskModal
-        task={selectedTask}
-        onClose={closeEditModal}
-        onSave={(id, title, des) => editTask(id, title, des)}
-      />
+      <AnimatePresence>
+        <motion.div>
+          <EditTaskModal
+            task={selectedTask}
+            onClose={closeEditModal}
+            onSave={(id, title, des) => editTask(id, title, des)}
+          />
+        </motion.div>
+      </AnimatePresence>
     </section>
   );
 };
