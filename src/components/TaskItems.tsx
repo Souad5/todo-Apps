@@ -3,56 +3,32 @@ import { CiEdit } from "react-icons/ci";
 import { MdDelete, MdDragIndicator } from "react-icons/md";
 import { TiPin } from "react-icons/ti";
 import { useTasks } from "../contexts/TaskProvider";
+import type { Task } from "../types";
 
-// interface Task {
-//   id: string;
-//   title: string;
-//   des: string;
-//   completed: boolean;
-//   pinned: boolean;
-// }
-
-// interface TaskItemsProps {
-//   task: Task;
-//   openEditModal: (task: Task) => void;
-// }
-
-interface Task {
-  id: string;
-  title: string;
-  des: string;
-  completed: boolean;
-  pinned: boolean;
-}
-
-interface TaskProps {
+interface Props {
   task: Task;
   openEditModal: (task: Task) => void;
+  draggable?: boolean;
 }
 
-const TaskItems = ({ task, openEditModal }: TaskProps) => {
+const TaskItems = ({ task, openEditModal, draggable = true }: Props) => {
   const { toggleComplete, togglePin, deleteTask } = useTasks();
-
   const controls = useDragControls();
+
   return (
     <Reorder.Item
-      id={task.id}
-      key={task.id}
       value={task}
       dragListener={false}
       dragControls={controls}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      className="border border-sky-400 rounded-xl p-4 flex justify-between items-start"
+      className="border border-sky-400 rounded-xl p-4 flex justify-between items-start bg-white"
     >
       {/* Left */}
-
       <div className="flex gap-3">
         <input
           type="checkbox"
           checked={task.completed}
           onChange={() => toggleComplete(task.id)}
-          className="mt-1 cursor-pointer accent-sky-500"
+          className="mt-1 accent-sky-500 cursor-pointer"
         />
 
         <div>
@@ -63,46 +39,36 @@ const TaskItems = ({ task, openEditModal }: TaskProps) => {
           >
             {task.title}
           </h3>
-          <p
-            className={`text-sm ${
-              task.completed ? "text-gray-400" : "text-gray-600"
-            }`}
-          >
-            {task.des}
-          </p>
+          <p className="text-sm text-gray-600">{task.des}</p>
         </div>
       </div>
 
-      {/* Actions buttons*/}
+      {/* Actions */}
       <div className="flex items-center gap-3 text-xl">
         <CiEdit
-          className="cursor-pointer hover:text-sky-500"
           onClick={() => openEditModal(task)}
-          title="edit"
+          className="cursor-pointer hover:text-sky-500"
         />
 
         <TiPin
-          className={`cursor-pointer ${
-            task.pinned ? "text-blue-500" : "hover:text-gray-500"
-          }`}
           onClick={() => togglePin(task.id)}
-          title="Pin task"
+          className={`cursor-pointer ${task.pinned ? "text-blue-500" : ""}`}
+          title="Pin Task"
         />
 
         <MdDelete
-          className="cursor-pointer text-rose-400 hover:text-red-600"
           onClick={() => deleteTask(task.id)}
-          title="delete"
+          className="cursor-pointer text-rose-400 hover:text-red-600"
         />
 
-        {/* DRAG HANDLE */}
-        <button
-          onPointerDown={(e) => controls.start(e)}
-          className="cursor-grab text-gray-400 hover:text-gray-600 reorder-handle"
-          title="Drag"
-        >
-          <MdDragIndicator />
-        </button>
+        {draggable && (
+          <button
+            onPointerDown={(e) => controls.start(e)}
+            className="cursor-grab text-gray-400 hover:text-gray-600"
+          >
+            <MdDragIndicator />
+          </button>
+        )}
       </div>
     </Reorder.Item>
   );

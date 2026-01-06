@@ -10,16 +10,14 @@ const Pagination = ({
 
   return (
     <div className="flex justify-center items-center gap-2 mt-6">
-      {/* Previous */}
       <button
-        onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
         disabled={currentPage === 1}
-        className="px-3 py-1 border rounded disabled:opacity-50 cursor-pointer "
+        onClick={() => onPageChange(currentPage - 1)}
+        className="px-3 py-1 border cursor-pointer rounded disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <FaArrowLeft />
       </button>
 
-      {/* Page Numbers */}
       {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
         <button
           key={page}
@@ -34,11 +32,10 @@ const Pagination = ({
         </button>
       ))}
 
-      {/* Next */}
       <button
-        onClick={() => onPageChange(Math.min(currentPage + 1, totalPages))}
         disabled={currentPage === totalPages}
-        className="px-3 py-1 border rounded disabled:opacity-50 cursor-pointer"
+        onClick={() => onPageChange(currentPage + 1)}
+        className="px-3 py-1 border cursor-pointer rounded disabled:opacity-30 disabled:cursor-not-allowed"
       >
         <FaArrowRight />
       </button>

@@ -39,6 +39,7 @@ export const TaskCard = ({ task }: { task: Task }) => {
         <TiPin
           className={`cursor-pointer ${task.pinned && "text-blue-500"}`}
           onClick={() => togglePin(task.id)}
+          title="Unpin Task"
         />
         <MdDelete
           className="cursor-pointer text-rose-400"

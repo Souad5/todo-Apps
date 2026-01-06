@@ -26,8 +26,6 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
-  // const id = uuidv4();
-
   const addTask = (title: string, des: string) => {
     setTasks((prev) => [
       ...prev,
@@ -41,25 +39,18 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
     ]);
   };
 
-  const deleteNotify = () =>
-    toast.warning("Task deleted!!", {
-      position: "top-center",
-    });
-
   const deleteTask = (id: string) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
       confirmButtonText: "Delete",
+      confirmButtonColor: "red",
     }).then((result) => {
-      if (result.isConfirmed === true) {
+      if (result.isConfirmed) {
         setTasks((prev) => prev.filter((task) => task.id !== id));
-
-        deleteNotify();
+        toast.warning("Task deleted!!", { position: "top-center" });
       }
     });
   };
@@ -86,20 +77,18 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
     );
   };
 
-  const sortedTasks = [...tasks].sort(
-    (a, b) => Number(b.pinned) - Number(a.pinned)
-  );
-  const reorderTasks = (newOrder: Task[]) => {
+  // Reorder ONLY unpinned tasks
+  const reorderTasks = (newUnpinnedOrder: Task[]) => {
     setTasks((prev) => {
       const pinned = prev.filter((t) => t.pinned);
-      return [...pinned, ...newOrder];
+      return [...pinned, ...newUnpinnedOrder];
     });
   };
 
   return (
     <TaskContext.Provider
       value={{
-        tasks: sortedTasks,
+        tasks,
         addTask,
         deleteTask,
         toggleComplete,
@@ -113,8 +102,9 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+//eslint-disable-next-line
 export const useTasks = () => {
-  const ctx = useContext(TaskContext);
-  if (!ctx) throw new Error("useTasks must be used inside TaskProvider");
-  return ctx;
+  const context = useContext(TaskContext);
+  if (!context) throw new Error("useTasks must be used inside TaskProvider");
+  return context;
 };

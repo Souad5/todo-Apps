@@ -9,6 +9,7 @@ const EditTaskModal = ({ task, onClose, onSave }: Props) => {
   // Sync modal state when task changes
   useEffect(() => {
     if (task) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTitle(task.title);
       setDes(task.des);
     }
@@ -27,21 +28,6 @@ const EditTaskModal = ({ task, onClose, onSave }: Props) => {
     onSave(task.id, title, des);
     onClose();
   };
-
-  // const handleSave = () => {
-  //   if (!title.trim() && !des.trim()) {
-  //     notifyToast();
-  //     return;
-  //   }
-
-  //   if (!title.trim()) {
-  //     alert("Title is required");
-  //     return;
-  //   }
-
-  //   onSave(task.id, title, des);
-  //   onClose();
-  // };
 
   return (
     <div
