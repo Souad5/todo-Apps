@@ -26,7 +26,7 @@ export const TaskCard = ({ task }: { task: Task }) => {
           <h3
             className={`font-semibold ${
               task.completed && "line-through text-gray-400"
-            }`}
+            } `}
           >
             {task.title}
           </h3>

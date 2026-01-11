@@ -52,7 +52,7 @@ const TaskForm = () => {
       </div>
 
       {/* Search & Filter */}
-      <div className="flex flex-col md:flex-row justify-between my-4 gap-4">
+      <div className="flex flex-col md:flex-row justify-between my-4 gap-4 bg-white">
         {/* Search */}
         <div className="relative w-full md:w-1/2">
           <input
@@ -64,7 +64,7 @@ const TaskForm = () => {
               setSearchQuery(e.target.value);
             }}
           />
-          <CiSearch className="absolute top-1/2 transform -translate-y-1/2 right-3" />
+          <CiSearch className="absolute top-1/2 transform -translate-y-1/2 right-2" />
         </div>
 
         {/* Status Filter */}
@@ -72,12 +72,17 @@ const TaskForm = () => {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value as FilterStatus)}
-            className="border border-[#00bcff] p-2 rounded-lg w-full focus:outline-sky-400"
+            className="border border-[#00bcff] p-2 rounded-lg w-full focus:outline-sky-400 pr-8 appearance-none"
           >
             <option value="all">All Tasks</option>
             <option value="pending">Pending</option>
             <option value="completed">Completed</option>
           </select>
+
+          {/* Custom arrow */}
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-900">
+            ▼
+          </span>
         </div>
       </div>
 

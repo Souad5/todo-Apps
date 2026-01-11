@@ -56,6 +56,13 @@ const TasksSection = ({ searchQuery, filterStatus }: TasksSectionProps) => {
       </div>
     );
   }
+  if (filteredTasks.length === 0) {
+    return (
+      <div className="text-center text-5xl mt-8 text-gray-500">
+        No task is here
+      </div>
+    );
+  }
 
   return (
     <section className="my-10 space-y-6">
@@ -64,12 +71,7 @@ const TasksSection = ({ searchQuery, filterStatus }: TasksSectionProps) => {
         <>
           <h2 className="text-2xl font-bold text-center">Pinned Tasks</h2>
           {pinnedTasks.map((task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              // openEditModal={setSelectedTask}
-              // draggable={false}
-            />
+            <TaskCard key={task.id} task={task} />
           ))}
         </>
       )}
